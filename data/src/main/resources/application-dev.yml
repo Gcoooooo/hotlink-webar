@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/hotlink_webar?allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=CTT
+    username: root
+    password: p@swrd123
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+  type-aliases-package: com.hotlink.data.model
+
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

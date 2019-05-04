@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotlink.data.db.mapper.RecognitionMapper">
+
+    <resultMap
+        id="recognitionSamplePictureResult"
+        type="RecognitionSamplePicture" >
+        
+        <result property="id" column="recognition_sample_picture_id" />
+        <result property="samplePic" column="recognition_sample_picture_sample_pic" />
+        <result property="url" column="recognition_sample_picture_url" />
+        <result property="activityId" column="recognition_sample_picture_activity_id" />
+        
+    </resultMap>
+
+
+    <sql id="recognitionSamplePictureColumns" >
+        
+        rs.id as recognition_sample_picture_id,
+        rs.sample_pic as recognition_sample_picture_sample_pic,
+        rs.url as recognition_sample_picture_url,
+        rs.activity_id as recognition_sample_picture_activity_id
+    
+    </sql>
+
+
+    <select id="selectRecognitionSamplePicturesByActivityId"
+        parameterType="map"
+        resultMap="recognitionSamplePictureResult">
+        
+        SELECT
+            <include refid="recognitionSamplePictureColumns"/>
+        FROM
+            t_recognition_sample_picture rs
+        WHERE
+            rs.activity_id = #{activityId, javaType=int, jdbcType=INTEGER}
+    </select> 
+
+	<update id="updateRecognitionSamplePictures"
+		parameterType="java.util.List">
+	
+		<foreach item="recogSamplePic" index="index" collection="list"
+			separator=";">
+			UPDATE
+				t_recognition_sample_picture
+			<set>
+				<if test="recogSamplePic.samplePic != null">
+				sample_pic = #{recogSamplePic.samplePic},
+				</if>
+				<if test="recogSamplePic.url != null">
+				url = #{recogSamplePic.url}
+				</if>	
+			</set>
+			WHERE
+				id = #{recogSamplePic.id}
+		</foreach>
+	
+	</update>
+	
+	<insert id="insertRecognitionSamplePictures"
+		parameterType="java.util.List">
+		
+		INSERT INTO t_recognition_sample_picture (
+			sample_pic,
+			url,
+			activity_id
+		) VALUES
+		<foreach item="recogSamplePic" collection="list" 
+		open="(" separator="),(" close=")">
+			#{recogSamplePic.samplePic, javaType=string, jdbcType=CHAR},
+			#{recogSamplePic.url, javaType=string, jdbcType=CHAR},
+			#{recogSamplePic.activityId, javaType=int, jdbcType=INTEGER}
+		
+		</foreach>
+	</insert>
+	
+	
+	<delete id="deleteRecognitionSamplePicturesByActivityId"
+		parameterType="java.lang.Integer" >
+		
+		DELETE FROM
+			t_recognition_sample_picture
+		WHERE
+			activity_id = #{activityId, javaType=int, jdbcType=INTEGER}
+	
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    
+</mapper>   

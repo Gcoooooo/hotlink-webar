@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hotlink</groupId>
+    <artifactId>hotlink-webar-business</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>business</name>
+    <description>Demo project for Spring Boot</description>
+
+    <!-- 继承本项目的父工程 -->
+    <parent>
+        <groupId>com.hotlink</groupId>
+        <artifactId>hotlink-webar</artifactId>
+        <version>1.0.0.RELEASE</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <org.mybatis.spring.boot.version>1.3.0</org.mybatis.spring.boot.version>
+        <com.nativelibs4java.version>0.12</com.nativelibs4java.version>
+        <org.wechatvr.nsfc-surflib>3.0</org.wechatvr.nsfc-surflib>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wechatvr</groupId>
+            <artifactId>nsfc-surflib</artifactId>
+            <version>${org.wechatvr.nsfc-surflib}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nativelibs4java</groupId>
+            <artifactId>jnaerator</artifactId>
+            <version>${com.nativelibs4java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hotlink</groupId>
+            <artifactId>hotlink-webar-data</artifactId>
+        </dependency>
+        <!--  cache -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <!--  redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- Mybatis -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${org.mybatis.spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hotlink</groupId>
+            <artifactId>hotlink-webar-data</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -7,6 +7,8 @@ import com.hotlink.data.db.mapper.RecognitionMapper;
 import com.hotlink.data.model.RecognitionSamplePicture;
 import com.ochafik.lang.jnaerator.runtime.MangledFunctionMapper;
 import com.sun.jna.Native;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,8 @@ import java.util.Map;
 @EnableCaching
 public class ScanHandlerImpl implements IScanHandler {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ScanHandlerImpl.class);
+
 	@Autowired
 	private RecognitionMapper recognitionMapper;
 
@@ -31,11 +35,14 @@ public class ScanHandlerImpl implements IScanHandler {
 	
 	private static final SurfLibrary INSTANCE = (SurfLibrary) load();
 	
-    private static Object load() {  
+    private static Object load() {
+
     	if (OS_NAME.indexOf("linux") != -1) {
 	        String tmpLibDir = JNAUtility.extractLibraries("surflib", new String[] {
 	                "surflib.so"
-	        });        
+	        });
+	        LOG.info("jna.library.path is {}", tmpLibDir);
+
 	        System.setProperty("jna.library.path", tmpLibDir);
 
 	        Map<String, Object> options = new HashMap<>();
@@ -49,15 +56,18 @@ public class ScanHandlerImpl implements IScanHandler {
     	}
     }   
     
-	public boolean isMatched(int activityId, String picDetect) {
+	public boolean isMatched(int activityId, int pageNumber, String picDetect) {
 		int recognitionResult = 0;
 		
 		if (OS_NAME.indexOf("linux") != -1) { //当系统为linux时
 
-		    List<RecognitionSamplePicture> picSamples =(List<RecognitionSamplePicture>) redisService.get("recognitionPic_"+activityId);
-		    if (picSamples == null) {
-		    	picSamples = recognitionMapper.selectRecognitionSamplePicturesByActivityId(activityId);
-                redisService.set("recognitionPic_"+activityId, picSamples);
+		    List<RecognitionSamplePicture> picSamples = (List<RecognitionSamplePicture>) redisService.get("recognitionPic_"+activityId);
+		    if (picSamples != null && picSamples.size() > 0) {
+                LOG.info("从Redis中读取的原图像：" + picSamples.get(0));
+            } else {
+		    	picSamples = recognitionMapper.selectRecognitionSamplePicturesByActivityIdAndPageNumber(activityId, pageNumber);
+				LOG.info("从数据库中读取的原图像：" + picSamples.get(0));
+		    	redisService.set("recognitionPic_"+activityId, picSamples);
             }
 		    
 		    for (RecognitionSamplePicture picSample : picSamples) {
@@ -75,10 +85,15 @@ public class ScanHandlerImpl implements IScanHandler {
 	}
 	
 	@Override 
-	public List<RecognitionSamplePicture> getRecognitionSamplePictures(int id) {
+	public List<RecognitionSamplePicture> getRecognitionSamplePicturesByActivityId(int id) {
 		List<RecognitionSamplePicture> recognitionSamplePictures = recognitionMapper.selectRecognitionSamplePicturesByActivityId(id);
 		
 		return recognitionSamplePictures;
+	}
+
+	@Override
+	public void addRecognitionSamplePicturesByActivityId(List<RecognitionSamplePicture> recognitionSamplePictures) {
+		recognitionMapper.insertRecognitionSamplePictures(recognitionSamplePictures);
 	}
 }
 

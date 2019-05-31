@@ -13,6 +13,7 @@ public class RecognitionSamplePicture implements Serializable {
     private String samplePic;
     private String url;
     private Integer activityId;
+    private Integer pageNumber;
     
     public Integer getId() {
         return id;
@@ -45,7 +46,15 @@ public class RecognitionSamplePicture implements Serializable {
     public void setActivityId(Integer activityId) {
         this.activityId = activityId;
     }
-    
+
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);

@@ -12,7 +12,9 @@ import java.util.List;
 public interface RecognitionMapper {
     
     public List<RecognitionSamplePicture> selectRecognitionSamplePicturesByActivityId(@Param("activityId") int activityId);
-    
+
+    public List<RecognitionSamplePicture> selectRecognitionSamplePicturesByActivityIdAndPageNumber(@Param("activityId") int activityId, @Param("pageNumber") int pageNumber);
+
     public void updateRecognitionSamplePictures(List<RecognitionSamplePicture> recogSamplePics);
     
     public void insertRecognitionSamplePictures(List<RecognitionSamplePicture> recogSamplePics);

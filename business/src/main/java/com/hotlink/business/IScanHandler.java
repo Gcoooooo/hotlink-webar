@@ -5,8 +5,10 @@ import java.util.List;
 
 public interface IScanHandler {
 	
-	public boolean isMatched(int activityId, String picDetect);
+	public boolean isMatched(int activityId, int pageNumber, String picDetect);
 	
-	public List<RecognitionSamplePicture> getRecognitionSamplePictures(int id);
+	public List<RecognitionSamplePicture> getRecognitionSamplePicturesByActivityId(int id);
+
+	public void addRecognitionSamplePicturesByActivityId(List<RecognitionSamplePicture> recognitionSamplePictures);
 
 }

@@ -12,6 +12,7 @@
         <result property="samplePic" column="recognition_sample_picture_sample_pic" />
         <result property="url" column="recognition_sample_picture_url" />
         <result property="activityId" column="recognition_sample_picture_activity_id" />
+		<result property="pageNumber" column="recognition_sample_picture_page_number" />
         
     </resultMap>
 
@@ -21,7 +22,7 @@
         rs.id as recognition_sample_picture_id,
         rs.sample_pic as recognition_sample_picture_sample_pic,
         rs.url as recognition_sample_picture_url,
-        rs.activity_id as recognition_sample_picture_activity_id
+        rs.page_number as recognition_sample_picture_page_number
     
     </sql>
 
@@ -36,7 +37,21 @@
             t_recognition_sample_picture rs
         WHERE
             rs.activity_id = #{activityId, javaType=int, jdbcType=INTEGER}
-    </select> 
+    </select>
+
+	<select id="selectRecognitionSamplePicturesByActivityIdAndPageNumber"
+			parameterType="map"
+			resultMap="recognitionSamplePictureResult">
+
+		SELECT
+		<include refid="recognitionSamplePictureColumns"/>
+		FROM
+		t_recognition_sample_picture rs
+		WHERE
+		rs.activity_id = #{activityId, javaType=int, jdbcType=INTEGER}
+		AND
+		rs.page_number = #{pageNumber, javaType=int, jdbcType=INTEGER}
+	</select>
 
 	<update id="updateRecognitionSamplePictures"
 		parameterType="java.util.List">
@@ -65,14 +80,15 @@
 		INSERT INTO t_recognition_sample_picture (
 			sample_pic,
 			url,
-			activity_id
+			activity_id,
+		    page_number
 		) VALUES
 		<foreach item="recogSamplePic" collection="list" 
 		open="(" separator="),(" close=")">
 			#{recogSamplePic.samplePic, javaType=string, jdbcType=CHAR},
 			#{recogSamplePic.url, javaType=string, jdbcType=CHAR},
-			#{recogSamplePic.activityId, javaType=int, jdbcType=INTEGER}
-		
+			#{recogSamplePic.activityId, javaType=int, jdbcType=INTEGER},
+			#{recogSamplePic.pageNumber, javaType=int, jdbcType=INTEGER}
 		</foreach>
 	</insert>
 	

@@ -6,6 +6,7 @@ public class MatchRequest implements Serializable {
 
 	private String pic;
 	private int activityId;
+	private int pageNumber;
 
 	public int getActivityId() {
 		return activityId;
@@ -23,4 +24,11 @@ public class MatchRequest implements Serializable {
 		this.pic = pic;
 	}
 
+	public int getPageNumber() {
+		return pageNumber;
+	}
+
+	public void setPageNumber(int pageNumber) {
+		this.pageNumber = pageNumber;
+	}
 }
